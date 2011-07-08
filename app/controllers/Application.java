@@ -26,6 +26,7 @@ public class Application extends Controller {
     	dizi[1]=akp;
     	dizi[2]=mhp;
     	dizi[3]=diger;
+        //deneme
     	render(dizi);
     }
     
