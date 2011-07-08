@@ -4,7 +4,7 @@
 
 # Home page
 GET     /                                       Application.index
-POST    /user                                   Application.CreateUser
+
 
 # Ignore favicon requests
 GET     /favicon.ico                            404

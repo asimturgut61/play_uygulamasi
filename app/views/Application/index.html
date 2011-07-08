@@ -2,56 +2,41 @@
 #{set title:'Home' /}
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
-<form name="radioExampleForm" method="get" action="" onsubmit="return false;">
- 
- 
- <img src="/public/images/CHP.jpg" width=50 height=50 alt="CHP" style="position: absolute; left: 50px; top: 50px;">
- <img src="/public/images/AKP.gif" width=50 height=50 alt="CHP" style="position: absolute; left: 120px; top: 50px;">
- <img src="/public/images/MHP.jpg" width=50 height=50 alt="CHP" style="position: absolute; left: 190px; top: 50px;">
- <img src="/public/images/diger.jpg" width=50 height=50 alt="CHP" style="position: absolute; left: 280px; top: 50px;">
- 
- 
-<label for="number0"><input type="radio" id="r1" value="CHP" name="number" id="number0" style="position: absolute; left: 65px; top: 100px;"></label>
-<label for="number1"><input type="radio" id="r2" value="AKP" name="number" id="number1" style="position: absolute; left: 135px; top: 100px;"> </label>
-<label for="number2"><input type="radio" id="r3" value="MHP" name="number" id="number2" style="position: absolute; left: 205px; top: 100px;"></label>
-<label for="number3"><input type="radio" id="r4" value="DIGER" name="number" id="number3" style="position: absolute; left: 295px; top: 100px;"></label>
 
-<input type="button" id="createUser"  value="oy ver" style="position: absolute; left: 350px; top: 100px;">
-<input type="button" onclick="ciz();" value="grafiklemeyi göster" style="position: absolute; left: 450px; top: 100px;">
+ 
+ <form action="@{Application.index()}" >
+ <img src="/public/images/CHP.jpg"   width=50 height=50 alt="CHP"   style="position: absolute; left: 50px; top: 50px;">
+ <img src="/public/images/AKP.gif"   width=50 height=50 alt="AKP"   style="position: absolute; left: 120px; top: 50px;">
+ <img src="/public/images/MHP.jpg"   width=50 height=50 alt="MHP"   style="position: absolute; left: 190px; top: 50px;">
+ <img src="/public/images/diger.jpg" width=50 height=50 alt="DIGER" style="position: absolute; left: 280px; top: 50px;">
+ 
+ 
+<label for="number0"><input type="radio" value="CHP"   name="OY" id="number0" style="position: absolute; left: 65px;  top: 100px;"></label>
+<label for="number1"><input type="radio" value="AKP"   name="OY" id="number1" style="position: absolute; left: 135px; top: 100px;"> </label>
+<label for="number2"><input type="radio" value="MHP"   name="OY" id="number2" style="position: absolute; left: 205px; top: 100px;"></label>
+<label for="number3"><input type="radio" value="DIGER" name="OY" id="number3" style="position: absolute; left: 295px; top: 100px;"></label>
 
+<input type="submit"  value="oy ver" style="position: absolute; left: 350px; top: 100px;">
+<input type="button" onclick="ciz(${dizi[0].value},${dizi[1].value},${dizi[2].value},${dizi[3].value});" value="grafiklemeyi göster" style="position: absolute; left: 450px; top: 100px;">
+
+#{list items: a, as: 'User'}
+<li>
+${a}
+</li>
+#{/list}
+
+
+<li>
+
+<strong>CHP: ${dizi[0]}</strong> AKP: ${dizi[1]} MHP: ${dizi[2]} DIGER: ${dizi[3]} 
+
+</li>
 
 </form>
+
+
 <script type="text/javascript">
 
-$(function() {
-
-	
-	$('#createUser').click(function(){
-		var CHP = $('#r1').val();
-		var AKP = $('#r2').val();
-		var MHP = $('#r3').val();
-	  var DIGER = $('#r4').val();
-		$.ajax({
-		type: 'POST',
-		            url: "@{Application.CreateUser()}",
-		            dataType: "json",
-		            data: {
-		                CHP: CHP,
-		                AKP: AKP,
-		                MHP: MHP,
-		               DIGER: DIGER
-		            },
-		            success: function( data ) {
-		                $('#r1').text(data.CHP);
-		                $('#r2').text(data.AKP);
-		                $('#r3').text(data.MHP);
-		                $('#r4').text(data.DIGER);
-		               
-		            }
-		        });
-		return false;
-		});
-});
 
 
 function getCheckedValue(radioObj) {
@@ -70,13 +55,14 @@ function getCheckedValue(radioObj) {
 	}
 	return "";
 }
-function ciz(){
+
+function ciz(a,b,c,d){
 	var r = Raphael(0,0,500,500);
 	r.g.txtattr.font = "12px 'Fontin Sans', Fontin-Sans, sans-serif";
 	                
 	                r.g.text(320, 210, "2011 Yerel Seçim Sonuçları").attr({"font-size": 20});
 	                
-	                var pie = r.g.piechart(350, 350, 100, [49.9, 26.9, 12.9, 11.3], {legend: ["%%.%% AKP", "%%.%% CHP","%%.%% MHP","%%.%% DİĞER"], legendpos: "west", href: ["http://ktuluceng.com", "http://ktuluceng.com","http://ktuluceng.com","http://ktuluceng.com"],colors:['orange', 'red', 'green','blue']});
+	                var pie = r.g.piechart(350, 350, 100, [b, a, c, d], {legend: ["%%.%% AKP", "%%.%% CHP","%%.%% MHP","%%.%% DİĞER"], legendpos: "west", href: ["http://ktuluceng.com", "http://ktuluceng.com","http://ktuluceng.com","http://ktuluceng.com"],colors:['orange', 'red', 'green','blue']});
 	                pie.hover(function () {
 	                    this.sector.stop();
 	                    this.sector.scale(1.1, 1.1, this.cx, this.cy);
@@ -91,7 +77,11 @@ function ciz(){
 	                        this.label[0].animate({scale: 1}, 500, "bounce");
 	                        this.label[1].attr({"font-weight": 400});
 	                    }
+	                    
 	                });
+	               
 	
 }
+
+
 </script>

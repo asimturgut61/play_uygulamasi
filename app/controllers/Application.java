@@ -9,22 +9,29 @@ import models.*;
 
 public class Application extends Controller {
 
-    public static void index() {
-    	
-    	if(User.count() == 0){
-    		new User(true,true,true,true).save();
-    		new User(true,true,false,true).save();
-    		}
-    
+    public static void index(String OY) {
+    	if(OY!=null)
+    	 new User(OY).save();
+    	//render(user);
     		
-    	List users = User.findAll();
-    	
-    	render(users);
-    		}
+    //	List users = User.find("select u.OY from User u where u.OY like ?", OY).fetch();
+    	//List<User> users = User.findAll();
+    	int chp=User.find("select u.OY from User u Where u.OY like ?", "CHP").fetch().size();
+    	int akp=User.find("select u.OY from User u Where u.OY like ?", "AKP").fetch().size();
+    	int mhp=User.find("select u.OY from User u Where u.OY like ?", "MHP").fetch().size();
+    	int diger=User.find("select u.OY from User u Where u.OY like ?", "DIGER").fetch().size();
+    	//int a= User.findAll().size();
+    	int [] dizi=new int[4] ;
+    	dizi[0]=chp;
+    	dizi[1]=akp;
+    	dizi[2]=mhp;
+    	dizi[3]=diger;
+    	render(dizi);
+    }
     
-    public static void CreateUser(boolean AKP, boolean CHP,boolean MHP,boolean DIGER){
-    	User user = new User(AKP, CHP,MHP, DIGER).save();
-    	renderJSON(user);
+    public static void CreateUser(String OY){
+    	User user = new User(OY).save();
+    	render(user);
     	
     }
     
